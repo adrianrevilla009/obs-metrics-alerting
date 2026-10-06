@@ -1,0 +1,10 @@
+{
+  "concepts": [
+    {"concept": "metric scrape/export", "prometheus": "scrape /actuator/prometheus", "datadog": "micrometer-registry-datadog or Agent OpenMetrics check", "newrelic": "micrometer-registry-new-relic or OTLP"},
+    {"concept": "dashboards", "prometheus": "Grafana JSON", "datadog": "Dashboard JSON / Terraform datadog_dashboard", "newrelic": "Dashboard JSON / NerdGraph"},
+    {"concept": "alerting", "prometheus": "alert rules + Alertmanager", "datadog": "Monitors", "newrelic": "Alert conditions + workflows"},
+    {"concept": "SLOs", "prometheus": "burn-rate rules", "datadog": "SLO objects with burn-rate monitors", "newrelic": "Service levels"},
+    {"concept": "tracing/APM", "prometheus": "not covered (use Tempo/Jaeger)", "datadog": "APM via dd-java-agent", "newrelic": "APM via newrelic java agent"},
+    {"concept": "synthetic checks", "prometheus": "blackbox exporter", "datadog": "Synthetic tests", "newrelic": "Synthetic monitors"}
+  ]
+}

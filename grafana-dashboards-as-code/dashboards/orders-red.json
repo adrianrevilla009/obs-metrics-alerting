@@ -1,0 +1,34 @@
+{
+  "uid": "orders-red",
+  "title": "Orders RED",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "time": { "from": "now-1h", "to": "now" },
+  "panels": [
+    {
+      "id": 1, "type": "timeseries", "title": "Rate (orders/s)",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prom" },
+      "targets": [{ "refId": "A", "expr": "sum(rate(orders_placed_total[5m]))" }]
+    },
+    {
+      "id": 2, "type": "timeseries", "title": "Errors (ratio)",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prom" },
+      "targets": [{ "refId": "A", "expr": "sum(rate(orders_placed_total{outcome=\"error\"}[5m])) / sum(rate(orders_placed_total[5m]))" }]
+    },
+    {
+      "id": 3, "type": "timeseries", "title": "Duration p95 (s)",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prom" },
+      "targets": [{ "refId": "A", "expr": "histogram_quantile(0.95, sum by (le) (rate(orders_place_duration_seconds_bucket[5m])))" }]
+    },
+    {
+      "id": 4, "type": "stat", "title": "Queue depth (saturation)",
+      "gridPos": { "h": 6, "w": 8, "x": 0, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "prom" },
+      "targets": [{ "refId": "A", "expr": "max(orders_queue_depth)" }]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+# Spring Boot profile sketch: the same Micrometer meters, shipped to a vendor instead of scraped.
+# Keys are read from the environment at runtime; nothing secret lives in git.
+management:
+  datadog:
+    metrics:
+      export:
+        enabled: false          # set true with the profile "datadog"
+        api-key: ${DD_API_KEY:}
+        step: 1m
+  newrelic:
+    metrics:
+      export:
+        enabled: false          # set true with the profile "newrelic"
+        api-key: ${NEW_RELIC_API_KEY:}
+        account-id: ${NEW_RELIC_ACCOUNT_ID:}
+        step: 1m
+  metrics:
+    tags:
+      service: orders
+      env: ${DEPLOY_ENV:local}

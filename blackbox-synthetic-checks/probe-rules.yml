@@ -1,0 +1,17 @@
+groups:
+  - name: synthetic
+    rules:
+      - alert: OrdersEndpointDown
+        expr: probe_success{job="blackbox-http"} == 0
+        for: 3m
+        labels: {severity: page, team: orders}
+        annotations:
+          summary: "Synthetic check failing for {{ $labels.instance }}"
+          runbook: "https://example.com/runbooks/orders-down"
+      - alert: TlsCertExpiringSoon
+        expr: probe_ssl_earliest_cert_expiry{job="blackbox-http"} - time() < 14 * 24 * 3600
+        for: 1h
+        labels: {severity: ticket, team: orders}
+        annotations:
+          summary: "Certificate for {{ $labels.instance }} expires in under 14 days"
+          runbook: "https://example.com/runbooks/cert-renewal"

@@ -1,0 +1,21 @@
+groups:
+  - name: orders
+    rules:
+      - alert: OrdersHighErrorRatio
+        expr: sum(rate(orders_placed_total{outcome="error"}[5m])) / sum(rate(orders_placed_total[5m])) > 0.05
+        for: 10m
+        labels:
+          severity: page
+          team: orders
+        annotations:
+          summary: "More than 5% of orders fail"
+          runbook: "https://example.com/runbooks/orders-errors"
+      - alert: OrdersQueueSaturated
+        expr: max(orders_queue_depth) > 100
+        for: 15m
+        labels:
+          severity: ticket
+          team: orders
+        annotations:
+          summary: "Order queue depth above 100 for 15m"
+          runbook: "https://example.com/runbooks/orders-queue"

@@ -1,0 +1,15 @@
+groups:
+  - name: orders-slo-burn
+    rules:
+      - alert: OrdersErrorBudgetBurn1h
+        expr: (sum(rate(orders_placed_total{outcome="error"}[1h])) / sum(rate(orders_placed_total[1h]))) > 0.0144 and (sum(rate(orders_placed_total{outcome="error"}[5m])) / sum(rate(orders_placed_total[5m]))) > 0.0144
+        labels: {severity: page, team: orders}
+        annotations: {summary: "Burning error budget 14.4x over 1h", runbook: "https://example.com/runbooks/orders-slo"}
+      - alert: OrdersErrorBudgetBurn6h
+        expr: (sum(rate(orders_placed_total{outcome="error"}[6h])) / sum(rate(orders_placed_total[6h]))) > 0.006 and (sum(rate(orders_placed_total{outcome="error"}[30m])) / sum(rate(orders_placed_total[30m]))) > 0.006
+        labels: {severity: page, team: orders}
+        annotations: {summary: "Burning error budget 6.0x over 6h", runbook: "https://example.com/runbooks/orders-slo"}
+      - alert: OrdersErrorBudgetBurn3d
+        expr: (sum(rate(orders_placed_total{outcome="error"}[3d])) / sum(rate(orders_placed_total[3d]))) > 0.001 and (sum(rate(orders_placed_total{outcome="error"}[6h])) / sum(rate(orders_placed_total[6h]))) > 0.001
+        labels: {severity: ticket, team: orders}
+        annotations: {summary: "Burning error budget 1.0x over 3d", runbook: "https://example.com/runbooks/orders-slo"}

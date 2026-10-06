@@ -1,0 +1,26 @@
+route:
+  receiver: default
+  group_by: [alertname, team]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  routes:
+    - matchers: ['severity="page"']
+      receiver: oncall
+      repeat_interval: 1h
+    - matchers: ['severity="ticket"']
+      receiver: ticket-queue
+
+inhibit_rules:
+  - source_matchers: ['severity="page"']
+    target_matchers: ['severity="ticket"']
+    equal: [team]
+
+receivers:
+  - name: default
+  - name: oncall
+    webhook_configs:
+      - url: http://localhost:9095/oncall
+  - name: ticket-queue
+    webhook_configs:
+      - url: http://localhost:9095/tickets
